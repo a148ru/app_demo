@@ -18,8 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v2
+
         - name: Yandex Cloud CR "Login" Action for GitHub Actions
-          uses: yc-actions/yc-cr-login@v0.1-alpha
+          id: login-cr
+          uses: yc-actions/yc-cr-login@v3
           with:
             yc-sa-json-credentials: ${{ secrets.YC_SA_KEY }}
         - name: Build, tag, and push image to Yandex Cloud Container Registry
