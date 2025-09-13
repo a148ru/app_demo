@@ -46,20 +46,22 @@ jobs:
       - name: Create auth file
         env:
           YC_AUTH_KEY: ${{ secrets.YC_TOKEN }}
+          K8S_ID: ${{ secrets.K8S_ID }}
         run: |
           echo $YC_AUTH_KEY > $HOME/authorized_key.json
           yc config profile create sa
           yc config profile activate sa
           yc config set service-account-key $HOME/authorized_key.json
-          
-    # Настройка доступа к Kubernetes кластеру
-      - name: Configure K8s
-        uses: azure/k8s-set-context@v3
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG_DATA }}  # Закодированный base64 kubeconfig
+          yc managed-kubernetes cluster get-credentials --id $K8S_ID --external
+
+      - name: Install kubectl
+        run: |
+          curl -LO https://dl.k8s.io/release/`curl -LS https://dl.k8s.io/release/stable.txt`/bin/linux/amd64/kubectl
+          mkdir $HOME/bin
+          chmod +x ./kubectl
+          mv ./kubectl $HOME/bin/kubectl
 
     # Обновление образа в кластере
       - name: Deploy
         run: |
-          kubectl -n ${{ env.K8S_NAMESPACE }} set image deployment/app-deployment app-demo=cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
+          kubectl set image deployment/app-deployment app-demo=cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
