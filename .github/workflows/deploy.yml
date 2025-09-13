@@ -10,7 +10,7 @@ on:
 env:
   CR_REGISTRY: crppqi6tfv23hnubsg5t
   CR_REPO: demo_app
-  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG: ${{ github.ref_name }} #${{ github.sha }}
   K8S_NAMESPACE: default
 
 jobs:
