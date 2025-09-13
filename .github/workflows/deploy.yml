@@ -47,6 +47,4 @@ jobs:
     # Обновление образа в кластере
     - name: Deploy
       run: |
-        kubectl -n ${{ env.K8S_NAMESPACE }} set image deployment/app-deployment \
-        app-demo=cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPO }}:${{ env.IMAGE_TAG }} \
-        --record
+        kubectl -n ${{ env.K8S_NAMESPACE }} set image deployment/app-deployment app-demo=cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
