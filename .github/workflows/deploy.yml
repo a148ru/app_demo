@@ -1,11 +1,11 @@
 name: Build, Push and Deploy
 
 on:
-  push:
-    branches: [main]
+#  push:
+#    branches: [main]
   
-#  release:
-#    types: [created]
+  release:
+    types: [created]
 
 env:
   CR_REGISTRY: crppqi6tfv23hnubsg5t
